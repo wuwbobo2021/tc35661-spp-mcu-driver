@@ -1,6 +1,8 @@
 # tc35661-spp-mcu-driver
 A simple driver for the TC35661 bluetooth chip which has an USART interface and only supports SPP mode.
 
+This program is designed based on information provided in <https://github.com/yuht/TC35661_Bluetooth>.
+
 Currently it hasn't made possible for the device to send connection request initiatively performing as a master device. A unique SSP mode that doesn't require user confirmation (of the 6 digit pairing numbers) will be set by this program. And it only accepts connection request from one master device. In demo program `main.c` for STM32F103C8T6, the link key is stored in flash memory after pairing with a master device, then it will not accept connection request from any other device. This can be changed, though.
 
 ## Hardware
