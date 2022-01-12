@@ -158,10 +158,8 @@ void step_init(void)
 			if (pbuff[0] != 0x04) return; //not HCI event
 			if (pbuff[1] == 0x0f) { //HCI_Command_Status_Event
 				if (array_equal(pbuff + 1 + 4, Init_Req[init_seq_current] + 1, 2)) //response of last command
-					if (pbuff[1 + 2] != 0x00) { //not successful
-						tc_driver_state = TC_BT_Init_Failed;
-						tc_bt_event_handler(TC_BT_Event_Init_Failed);
-					}
+					if (pbuff[1 + 2] != 0x00) //not successful
+						{tc_driver_state = TC_BT_Init_Failed; tc_bt_event_handler(TC_BT_Event_Init_Failed); return;}
 			} else //it should be a response of the specific type corresponding with that of the last command
 			if (pbuff[1 + 5] != 0x00) { //not successful
 				tc_driver_state = TC_BT_Init_Failed;
@@ -175,14 +173,14 @@ void step_init(void)
 				case Seq_MNG_Init:
 					if (tcu_resp->service_id == 0xE1 && tcu_resp->op_code == 0x81) { //TCU_MNG_Init_Resp
 						if (tcu_resp->param[0] != 0x00)
-							{tc_driver_state = TC_BT_Init_Failed; return;}
+							{tc_driver_state = TC_BT_Init_Failed; tc_bt_event_handler(TC_BT_Event_Init_Failed); return;}
 					} else return;
 					break;
 				
 				case Seq_MNG_SSP_Set1: case Seq_MNG_SSP_Set2: case Seq_MNG_SSP_Set3:
 					if (tcu_resp->service_id == 0xE1 && tcu_resp->op_code == 0xBD) { //TCU_MNG_SSP_Set_Resp
 						if (tcu_resp->param[0] != 0x00)
-							{tc_driver_state = TC_BT_Init_Failed; return;}
+							{tc_driver_state = TC_BT_Init_Failed; tc_bt_event_handler(TC_BT_Event_Init_Failed); return;}
 					} else return;
 					break;
 				
@@ -190,14 +188,14 @@ void step_init(void)
 					if (tcu_resp->service_id == 0xE5 && tcu_resp->op_code == 0x81) { //TCU_SPP_Setup_Resp
 						if (tcu_resp->param[0] == 0x00);
 						else if (tcu_resp->param[0] == 0x40) return; //setuping SPP
-						else {tc_driver_state = TC_BT_Init_Failed; return;}
+						else {tc_driver_state = TC_BT_Init_Failed; tc_bt_event_handler(TC_BT_Event_Init_Failed); return;}
 					} else return;
 					break;
 				
 				case Seq_MNG_Set_Scan:
 					if (tcu_resp->service_id == 0xE1 && tcu_resp->op_code == 0x8C) { //MNG_Set_Scan_Resp
 						if (tcu_resp->param[0] != 0x00)
-							{tc_driver_state = TC_BT_Init_Failed; return;}
+							{tc_driver_state = TC_BT_Init_Failed; tc_bt_event_handler(TC_BT_Event_Init_Failed); return;}
 					} else return;
 					break;
 				
