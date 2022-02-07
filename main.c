@@ -16,7 +16,7 @@
 
 #include "tc35661.h"
 
-// #define Debug_Mode
+// #define DEBUG
 
 // Uncomment the next line if connections from only one remote device should be allowed.
 // #define Bluetooth_Fixed_Link
@@ -124,7 +124,7 @@ void sleep_deep(void)
 	exti10_enable();
 	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
-	#ifdef Debug_Mode
+	#ifdef DEBUG
 		DBGMCU_Config(DBGMCU_STOP, ENABLE);
 	#endif
 	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
@@ -137,9 +137,7 @@ void sleep_deep(void)
 
 void state_backup(void)
 {
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
-	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 	PWR_BackupAccessCmd(ENABLE);
 	BKP_WriteBackupRegister(Bluetooth_State_Backup_Reg, (uint16_t)tc_driver_state & 0xFF);
 	PWR_BackupAccessCmd(DISABLE);
@@ -147,9 +145,7 @@ void state_backup(void)
 
 void state_recover(void)
 {
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP, ENABLE);
-	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
 	PWR_BackupAccessCmd(ENABLE);
 	tc_driver_state = (TC_BT_Driver_State)(uint8_t)(BKP_ReadBackupRegister(Bluetooth_State_Backup_Reg) & 0xFF);
 	PWR_BackupAccessCmd(DISABLE);
@@ -377,7 +373,7 @@ int main()
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	
 	delay_init();
-	#ifdef Debug_Mode
+	#ifdef DEBUG
 		delay_ms(5000); //Note: after the MCU is powered on, start debug session as soon as possible.
 	#endif
 	state_recover(); //recover the bluetooth module state if the system has been reset
