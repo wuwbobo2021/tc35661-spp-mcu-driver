@@ -396,6 +396,7 @@ extern void tc_bt_spp_disconnect(void)
 
 extern void tc_uart_receive_handler(void)
 {
+	uint16_t lparsed = 0; //length of already parsed data
 	uint16_t lrec = 0; //total length of the currently parsing response
 	pbuff = tc_uart_buff; //beginning position of the current response
 	
@@ -412,7 +413,7 @@ extern void tc_uart_receive_handler(void)
 		} else {
 			if (tc_uart_rec_count >= 3) {
 				if ((uint8_t) pbuff[1] > 2) {
-					pbuff++; tc_uart_rec_count--; //it's able to ignore one invalid byte
+					pbuff++; lparsed++; //it's able to ignore one invalid byte
 					continue;
 				}
 				lrec = (((uint16_t)(pbuff[1])) << 8) + pbuff[0];
@@ -431,17 +432,18 @@ extern void tc_uart_receive_handler(void)
 			} else break;
 		}
 		
-		tc_uart_rec_count -= lrec; //then it equals to the amount of bytes that hasn't been parsed
-		
-		if (tc_uart_rec_count > 0)
-			pbuff += lrec; //process later response(s) received
-		else return; //the buffer is clean
+		lparsed += lrec; pbuff += lrec;
+		if (lparsed >= tc_uart_rec_count) {
+			tc_uart_rec_count = 0; return; //the buffer is clean
+		}
 	}
 	
-	if (pbuff > tc_uart_buff) {
+	if (lparsed < tc_uart_rec_count) {
 		//make sure that `tc_uart_buff` begins at the next response (currently incomplete) for the next time
 		uint16_t i;
-		for (i = 0; i < tc_uart_rec_count; i++)
+		for (i = 0; i < tc_uart_rec_count - lparsed; i++)
 			tc_uart_buff[i] = pbuff[i];
 	}
+	
+	tc_uart_rec_count -= lparsed;
 }
