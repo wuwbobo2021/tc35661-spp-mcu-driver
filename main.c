@@ -375,6 +375,8 @@ int main()
 	delay_init();
 	#ifdef DEBUG
 		delay_ms(5000); //Note: after the MCU is powered on, start debug session as soon as possible.
+	#else
+		delay_ms(150);
 	#endif
 	state_recover(); //recover the bluetooth module state if the system has been reset
 	memcpy(tc_bt_conf.local_addr, Bluetooth_Address, 6); //definition of tc_bt_conf is in tc35661 module
