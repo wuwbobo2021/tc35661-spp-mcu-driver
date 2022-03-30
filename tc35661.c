@@ -64,20 +64,21 @@ typedef enum {
 	Seq_MNG_Set_Scan
 } Init_Seq;
 
-uint8_t Init_HCI_Length[4] = {0x04, 0x0a, 0x07, 0x07};
+static uint8_t Init_HCI_Length[4] = {0x04, 0x0a, 0x07, 0x07};
 
 //10 + 32 = 0x2a, hence the max length of device name is 32
-uint8_t Init_Req[10][0x2a] = {{0x01, 0x03, 0x0c, 0x00},
-                              {0x01, 0x13, 0x10, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //00s should be replaced with local address
-                              {0x01, 0x08, 0xfc, 0x03, 0x00, 0x93, 0x00},
-                              {0x01, 0x08, 0xfc, 0x03, 0x00, 0x99, 0x01},
-							  
-							  {0x14, 0x00, 0x00, 0xe1, 0x01, 0x0d, 0x00, 0x04, 0x02}, //1B local device name length and device name will be added at right
-                              {0x0d, 0x00, 0x00, 0xe1, 0x3d, 0x06, 0x00, 0x24, 0x0c, 0x03, 0x04, 0x04, 0x24},
-                              {0x07, 0x00, 0x00, 0xe5, 0x01, 0x00, 0x00},
-                              {0x0e, 0x00, 0x00, 0xe1, 0x3d, 0x07, 0x00, 0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00},
-                              {0x0e, 0x00, 0x00, 0xe1, 0x3d, 0x07, 0x00, 0x1e, 0x0c, 0x04, 0x00, 0x02, 0x12, 0x00},
-                              {0x08, 0x00, 0x00, 0xe1, 0x0c, 0x01, 0x00, 0x03}};
+static uint8_t Init_Req[10][0x2a] = {
+	{0x01, 0x03, 0x0c, 0x00},
+	{0x01, 0x13, 0x10, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //00s should be replaced with local address
+	{0x01, 0x08, 0xfc, 0x03, 0x00, 0x93, 0x00},
+	{0x01, 0x08, 0xfc, 0x03, 0x00, 0x99, 0x01},
+	{0x14, 0x00, 0x00, 0xe1, 0x01, 0x0d, 0x00, 0x04, 0x02}, //1B local device name length and device name will be added at right
+	{0x0d, 0x00, 0x00, 0xe1, 0x3d, 0x06, 0x00, 0x24, 0x0c, 0x03, 0x04, 0x04, 0x24},
+	{0x07, 0x00, 0x00, 0xe5, 0x01, 0x00, 0x00},
+	{0x0e, 0x00, 0x00, 0xe1, 0x3d, 0x07, 0x00, 0x1c, 0x0c, 0x04, 0x00, 0x04, 0x12, 0x00},
+	{0x0e, 0x00, 0x00, 0xe1, 0x3d, 0x07, 0x00, 0x1e, 0x0c, 0x04, 0x00, 0x02, 0x12, 0x00},
+	{0x08, 0x00, 0x00, 0xe1, 0x0c, 0x01, 0x00, 0x03}
+};
 
 typedef enum {
 	Seq_MNG_Connection_Accept1 = 0,
@@ -89,36 +90,38 @@ typedef enum {
 	Seq_Connect_Cancel
 } Connect_Seq;
 
-uint8_t Connect_Req[6][0x1f] = {{0x0f, 0x00, 0x00, 0xe1, 0x13, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //6B remote address and 1B use of link key at last
-                                {0x13, 0x00, 0x00, 0xe1, 0x3d, 0x0c, 0x00, 0x2b, 0x04, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04},
-                                {0x10, 0x00, 0x00, 0xe1, 0x3d, 0x09, 0x00, 0x2c, 0x04, 0x06}, //6B remote address at last, initialized with 0x00 (auto)
-                                {0x1f, 0x00, 0x00, 0xe1, 0x13, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}, //16B link key at last
-                                {0x0f, 0x00, 0x00, 0xe1, 0x13, 0x08, 0x00, 0x01}, //6B remote address at last
-                                {0x07, 0x00, 0x00, 0xe1, 0x15, 0x00, 0x00}};
+static uint8_t Connect_Req[6][0x1f] = {
+	{0x0f, 0x00, 0x00, 0xe1, 0x13, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, //6B remote address and 1B use of link key at last
+	{0x13, 0x00, 0x00, 0xe1, 0x3d, 0x0c, 0x00, 0x2b, 0x04, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04},
+	{0x10, 0x00, 0x00, 0xe1, 0x3d, 0x09, 0x00, 0x2c, 0x04, 0x06}, //6B remote address at last, initialized with 0x00 (auto)
+	{0x1f, 0x00, 0x00, 0xe1, 0x13, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}, //16B link key at last
+	{0x0f, 0x00, 0x00, 0xe1, 0x13, 0x08, 0x00, 0x01}, //6B remote address at last
+	{0x07, 0x00, 0x00, 0xe1, 0x15, 0x00, 0x00}
+};
 
-uint8_t SPP_Disconnect_Req[7] = {0x07, 0x00, 0x00, 0xe5, 0x04, 0x00, 0x00};
+static uint8_t SPP_Disconnect_Req[7] = {0x07, 0x00, 0x00, 0xe5, 0x04, 0x00, 0x00};
 
 volatile TC_BT_Config tc_bt_conf; //extern
 
-volatile TC_BT_Driver_State tc_driver_state = TC_BT_Before_Init;
-volatile uint8_t rejected_remote_addr[6];
+volatile TC_BT_Driver_State tc_driver_state = TC_BT_Before_Init; //extern
+volatile uint8_t rejected_remote_addr[6]; //extern
 
-volatile Init_Seq init_seq_current = Seq_HCI_Reset;
-volatile Connect_Seq connect_seq_current = Seq_MNG_Connection_Accept1;
+static volatile Init_Seq init_seq_current = Seq_HCI_Reset;
+static volatile Connect_Seq connect_seq_current = Seq_MNG_Connection_Accept1;
 
-volatile uint8_t* pbuff;
+static volatile uint8_t* pbuff;
 
 uint8_t tc_bt_spp_buff[TC_BT_SPP_Buff_Max_Size]; //extern, SPP receive buffer
 volatile uint16_t tc_bt_spp_rec_count = 0; //extern
 
-void memcpy(volatile uint8_t* p1, const volatile uint8_t* p2, uint16_t length)
+static void memcpy(volatile uint8_t* p1, const volatile uint8_t* p2, uint16_t length)
 {
 	uint16_t i;
 	for (i = 0; i < length; i++)
 		p1[i] = p2[i];
 }
 
-bool array_equal(const volatile uint8_t* p1, const volatile uint8_t* p2, uint16_t length)
+static bool array_equal(const volatile uint8_t* p1, const volatile uint8_t* p2, uint16_t length)
 {
 	uint16_t i;
 	for (i = 0; i < length; i++)
@@ -127,7 +130,7 @@ bool array_equal(const volatile uint8_t* p1, const volatile uint8_t* p2, uint16_
 	return true;
 }
 
-void modify_commands(void)
+static void update_commands(void)
 {
 	memcpy(Init_Req[Seq_HCI_Write_Address] + 4, tc_bt_conf.local_addr, 6);
 	
@@ -146,7 +149,7 @@ void modify_commands(void)
 		memcpy(Connect_Req[Seq_MNG_Connection_Accept2] + 15, tc_bt_conf.valid_link.link_key, 16);
 }
 
-void step_init(void)
+static void step_init(void)
 {
 	uint8_t lsend;
 	
@@ -219,7 +222,7 @@ void step_init(void)
 	tc_uart_send_bytes(Init_Req[init_seq_current], lsend);
 }
 
-void step_connect(void)
+static void step_connect(void)
 {
 	TCU_Command* tcu_resp = (TCU_Command*) pbuff; uint8_t lsend;
 	
@@ -232,7 +235,7 @@ void step_connect(void)
 				if (array_equal(creq->remote_address, tc_bt_conf.valid_link.remote_addr, 6)) {
 					tc_driver_state = TC_BT_Connecting;
 					connect_seq_current = Seq_MNG_Connection_Accept2;
-					modify_commands();
+					update_commands();
 				} else {
 					if (tc_bt_conf.link_fixed) {
 						connect_seq_current = Seq_Reject;
@@ -248,7 +251,7 @@ void step_connect(void)
 				tc_driver_state = TC_BT_Pairing;
 				connect_seq_current = Seq_MNG_Connection_Accept1;
 				memcpy(tc_bt_conf.valid_link.remote_addr, creq->remote_address, 6);
-				modify_commands();
+				update_commands();
 			}
 		} else return;
 	} else if (tc_driver_state == TC_BT_Pairing) {
@@ -274,7 +277,7 @@ void step_connect(void)
 			} else return;
 		} else return;
 	} else if (tc_driver_state == TC_BT_Connecting) {
-		if (tcu_resp->service_id == 0xE1 && tcu_resp->op_code == 0x55) { //TCU_MNG_Connection_Accept_Resp
+		if (tcu_resp->service_id == 0xE1 && tcu_resp->op_code == 0x93) { //TCU_MNG_Connection_Accept_Resp
 			if (tcu_resp->param[0] != 0x00) //failed
 				{tc_driver_state = TC_BT_Idle; tc_bt_event_handler(TC_BT_Event_Connect_Failed); return;}
 			else return; //wait for TCU_MNG_Connection_Status_Event
@@ -303,7 +306,7 @@ void step_connect(void)
 	}
 }
 
-void spp_handler(void)
+static void spp_handler(void)
 {
 	TCU_Command* tcu_resp = (TCU_Command*) pbuff;
 	
@@ -346,7 +349,7 @@ void spp_handler(void)
 
 extern void tc_bt_init(void)
 {
-	modify_commands();
+	update_commands();
 	
 	if (tc_driver_state > TC_BT_Init || init_seq_current >= Seq_HCI_Set_Mode) return;
 	
@@ -398,7 +401,7 @@ extern void tc_uart_receive_handler(void)
 {
 	uint16_t lparsed = 0; //length of already parsed data
 	uint16_t lrec = 0; //total length of the currently parsing response
-	pbuff = tc_uart_buff; //beginning position of the current response
+	pbuff = tc_uart_buff; //beginning position of the current parsing response
 	
 	while (true) {
 		if (tc_driver_state == TC_BT_Init && init_seq_current < 4) { //HCI
@@ -419,7 +422,7 @@ extern void tc_uart_receive_handler(void)
 				lrec = (((uint16_t)(pbuff[1])) << 8) + pbuff[0];
 			} else break;
 			
-			if (tc_uart_rec_count >= lrec) { //the whole response is received				
+			if (tc_uart_rec_count >= lrec) { //the whole response is received
 				switch (tc_driver_state) { //these step_xxx are time-costing, new interrupts might come while delay_ms()
 					case TC_BT_Init:
 						step_init(); break;
