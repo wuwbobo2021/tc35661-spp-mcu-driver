@@ -6,7 +6,7 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-#define TC_BT_Link_Storage_Size 0x22
+#define TC_BT_Link_Storage_Size 22
 
 #define TC_UART_Buff_Max_Size 0x1000
 #define TC_BT_SPP_Buff_Max_Size 0x1000
