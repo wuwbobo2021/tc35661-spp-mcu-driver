@@ -6,4 +6,4 @@ This program is designed based on information provided in <https://github.com/yu
 Currently it hasn't made possible for the device to send connection request initiatively performing as a master device. A unique SSP mode that doesn't require user confirmation (of the 6 digit pairing numbers) is set by this program.
 
 ## Hardware
-The TC35661 chip is on the DCBT V1.3 module, it's pin definition is compatible with BM77, but without Pins 13~19. Pin 2, 3, 5 (and probably 4) are connected together internally (3.3 V), and Pin 1 (GND), Pin 20 (RXD), Pin 21 (TXD) should be connected (RXD to the MCU's USART TXD, TXD to the MCU's RXD).
+The TC35661 chip is on the DCBT V1.3 module, its pin definition is compatible with BM77, but without Pins 13~19. Pin 2, 3, 5 (and probably 4) are connected together internally (3.3 V), and Pin 1 (GND), Pin 20 (RXD), Pin 21 (TXD) should be connected (RXD to the MCU's USART TXD, TXD to the MCU's RXD).
