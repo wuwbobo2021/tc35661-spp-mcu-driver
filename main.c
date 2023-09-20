@@ -308,7 +308,7 @@ void USART1_IRQHandler(void)
 {
 	USART_ClearITPendingBit(USART1,USART_IT_RXNE); //for the next possible interrupt
 	
-	if(tc_uart_rec_count > TC_UART_Buff_Max_Size)
+	if(tc_uart_rec_count >= TC_UART_Buff_Max_Size)
 		tc_uart_rec_count = 0;
 	
 	tc_uart_buff[tc_uart_rec_count++] = USART_ReceiveData(USART1); //read one byte
